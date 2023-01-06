@@ -32,3 +32,7 @@ Now you're ready to go!
 Open the `README.md` file inside each assignment and follow the instructions.
 
 > **Note**: Remember that all commands inside the Readme files assume you are in the root of the project.
+
+## Status Badge
+
+[![Python package](https://github.com/Gustavo-1300/assignment1/actions/workflows/python-package.yml/badge.svg?branch=ci)](https://github.com/Gustavo-1300/assignment1/actions/workflows/python-package.yml)
