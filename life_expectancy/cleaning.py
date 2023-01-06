@@ -13,7 +13,7 @@ def clean_data( #pylint: disable=useless-return
     """
 
     # Load data
-    path = '/nfs/backup/wb_mciba_003/gspereira/faast-foundations/assignments/life_expectancy/data/'
+    path = '/nfs/backup/wb_mciba_003/gspereira/assignment1/life_expectancy/data/'
     file_read = 'eu_life_expectancy_raw.tsv'
     data = pd.read_table(path+file_read)
 
