@@ -1,6 +1,7 @@
 """Module for caening code and saving data transformed"""
-import pandas as pd
 import argparse
+import pathlib
+import pandas as pd
 
 def clean_data( #pylint: disable=useless-return
     region: str = 'PT'
@@ -13,9 +14,9 @@ def clean_data( #pylint: disable=useless-return
     """
 
     # Load data
-    path = '/nfs/backup/wb_mciba_003/gspereira/assignment1/life_expectancy/data/'
+    path = pathlib.Path(__file__).parent / 'data'
     file_read = 'eu_life_expectancy_raw.tsv'
-    data = pd.read_table(path+file_read)
+    data = pd.read_table(path / file_read)
 
     # Pivot data to long format
     old_column = data.columns[0]
@@ -47,7 +48,7 @@ def clean_data( #pylint: disable=useless-return
     data = data[data['region']==region]
 
     file_save = 'pt_life_expectancy.csv'
-    data.to_csv(path+file_save, index=False)
+    data.to_csv(path / file_save, index=False)
 
     return None
 
