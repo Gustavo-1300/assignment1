@@ -1,8 +1,8 @@
 """Module for caening code and saving data transformed"""
-import pandas as pd
 import argparse
+import pandas as pd
 
-def clean_data(
+def clean_data( #pylint: disable=useless-return
     region: str = 'PT'
 ) -> None:
     """
@@ -49,7 +49,7 @@ def clean_data(
     file_save = 'pt_life_expectancy.csv'
     data.to_csv(path+file_save, index=False)
 
-    return None #pylint: disable=useless-return
+    return None
 
 if __name__=='__main__': # pragma: no cover
     parser = argparse.ArgumentParser()
