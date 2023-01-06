@@ -1,6 +1,6 @@
 """Module for caening code and saving data transformed"""
-import argparse
 import pandas as pd
+import argparse
 
 def clean_data( #pylint: disable=useless-return
     region: str = 'PT'
