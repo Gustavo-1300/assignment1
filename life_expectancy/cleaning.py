@@ -4,8 +4,7 @@ import pathlib
 import pandas as pd
 
 def load_data(
-    file_name: str,
-    path: str
+    file_name: str
 ) -> pd.DataFrame:
     """
     Load specified file as a pandas DataFrame from data directory
@@ -14,6 +13,8 @@ def load_data(
     :return: Pandas DataFrame with loaded data
     """
 
+    # Get file's path
+    path = pathlib.Path(__file__).parent / 'data'
     data_loaded = pd.read_table(path / file_name)
 
     return data_loaded
@@ -66,21 +67,22 @@ def clean_data( #pylint: disable=useless-return
 
 def save_data(
     data_to_save: pd.DataFrame,
-    file_name: str,
-    path: str
+    file_name: str
 ) ->  None:
     """
     Save a pandas DataFrame to a direcotry specified
     :param data_to_save: Pandas DataFrame with data to be saved
     :param file_name: Name to give the file created
-    :param path: Path to the directory where to store the file
 
     :return: None
     """
 
+    # Get file's path
+    path = pathlib.Path(__file__).parent / 'data'
     data_to_save.to_csv(
         path / file_name,
-        index=False)
+        index=False
+    )
 
     return None
 
@@ -91,12 +93,8 @@ if __name__=='__main__': # pragma: no cover
     parser.add_argument('region')
     args = parser.parse_args()
 
-    # Get file's path
-    path = pathlib.Path(__file__).parent / 'data'
-
     life_data = load_data(
-        file_name='eu_life_expectancy_raw.tsv',
-        path=path
+        file_name='eu_life_expectancy_raw.tsv'
     )
 
     life_data_cleaned = clean_data(
@@ -106,6 +104,5 @@ if __name__=='__main__': # pragma: no cover
 
     save_data(
         data_to_save=life_data_cleaned,
-        file_name='pt_life_expectancy.csv',
-        path=path
+        file_name='pt_life_expectancy.csv'
     )
