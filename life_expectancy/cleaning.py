@@ -14,7 +14,6 @@ def load_data(
     :return: Pandas DataFrame with loaded data
     """
 
-    path = pathlib.Path(__file__).parent / 'data'
     data_loaded = pd.read_table(path / file_name)
 
     return data_loaded
@@ -79,14 +78,34 @@ def save_data(
     :return: None
     """
 
-    file_save = 'pt_life_expectancy.csv'
-    data_to_save.to_csv(path / file_save, index=False)
+    data_to_save.to_csv(
+        path / file_name,
+        index=False)
 
     return None
 
 if __name__=='__main__': # pragma: no cover
+
+    # Parse arguments passed through cli
     parser = argparse.ArgumentParser()
     parser.add_argument('region')
     args = parser.parse_args()
 
-    clean_data(region=args.region)
+    # Get file's path
+    path = pathlib.Path(__file__).parent / 'data'
+
+    life_data = load_data(
+        file_name='eu_life_expectancy_raw.tsv',
+        path=path
+    )
+
+    life_data_cleaned = clean_data(
+        life_data=life_data,
+        region=args.region
+    )
+
+    save_data(
+        data_to_save=life_data_cleaned,
+        file_name='pt_life_expectancy.csv',
+        path=path
+    )
