@@ -32,16 +32,14 @@ def clean_data(
     :return: Pandas DataFramed cleaned and filtered
     """
 
-    life_data_raw = life_data.copy(deep=True)
-
     # Pivot data to long format
-    old_column = life_data_raw.columns[0]
+    old_column = life_data.columns[0]
     new_columns = old_column.split(',')
 
-    life_data_raw[new_columns] = life_data_raw[old_column].str.split(',', expand=True)
-    life_data_raw = life_data_raw.drop(columns=old_column)
+    life_data[new_columns] = life_data[old_column].str.split(',', expand=True)
+    life_data = life_data.drop(columns=old_column)
 
-    life_data_pivoted = life_data_raw.melt(
+    life_data_pivoted = life_data.melt(
         new_columns,
         var_name='year',
         value_name='value'
