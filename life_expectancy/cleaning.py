@@ -20,7 +20,7 @@ def load_data(
     return data_loaded
 
 
-def clean_data( #pylint: disable=useless-return
+def clean_data(
     life_data: pd.DataFrame,
     region: str = 'PT'
 ) -> pd.DataFrame:
@@ -65,7 +65,7 @@ def clean_data( #pylint: disable=useless-return
 
     return life_data_cleaned
 
-def save_data(
+def save_data( #pylint: disable=useless-return
     data_to_save: pd.DataFrame,
     file_name: str
 ) ->  None:
@@ -93,16 +93,16 @@ if __name__=='__main__': # pragma: no cover
     parser.add_argument('region')
     args = parser.parse_args()
 
-    life_data = load_data(
+    life_data_raw = load_data(
         file_name='eu_life_expectancy_raw.tsv'
     )
 
-    life_data_cleaned = clean_data(
-        life_data=life_data,
+    life_data_processed = clean_data(
+        life_data=life_data_raw,
         region=args.region
     )
 
     save_data(
-        data_to_save=life_data_cleaned,
+        data_to_save=life_data_processed,
         file_name='pt_life_expectancy.csv'
     )
