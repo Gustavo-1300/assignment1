@@ -3,17 +3,17 @@ import argparse
 import pathlib
 import pandas as pd
 
-def load_life_data(
-    file_name: str = 'eu_life_expectancy_raw.tsv'
+def load_data(
+    file_name: str,
+    path: str
 ) -> pd.DataFrame:
     """
-    Load specified file as a pandas DataFrame
+    Load specified file as a pandas DataFrame from data directory
     :param file_name: Name of the file to be loaded
 
     :return: Pandas DataFrame with loaded data
     """
 
-    # Get the path and load data
     path = pathlib.Path(__file__).parent / 'data'
     data_loaded = pd.read_table(path / file_name)
 
@@ -59,8 +59,24 @@ def clean_data( #pylint: disable=useless-return
     # Filter data to Portugal and save file
     data = data[data['region']==region]
 
+    return None
+
+def save_data(
+    data_to_save: pd.DataFrame,
+    file_name: str,
+    path: str
+) ->  None:
+    """
+    Save a pandas DataFrame to a direcotry specified
+    :param data_to_save: Pandas DataFrame with data to be saved
+    :param file_name: Name to give the file created
+    :param path: Path to the directory where to store the file
+
+    :return: None
+    """
+
     file_save = 'pt_life_expectancy.csv'
-    data.to_csv(path / file_save, index=False)
+    data_to_save.to_csv(path / file_save, index=False)
 
     return None
 
