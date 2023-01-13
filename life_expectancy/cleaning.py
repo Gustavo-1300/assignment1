@@ -21,23 +21,27 @@ def load_data(
 
 
 def clean_data( #pylint: disable=useless-return
+    life_data: pd.DataFrame,
     region: str = 'PT'
-) -> None:
+) -> pd.DataFrame:
     """
-    Read life expactancy data and perform cleaning and filtering before saving as a csv file
+    Perform cleaning and filtering on a given table with life expectancy data
+    :param life_data: Pandas DataFRame with data of life expectancy
     :param region: Region to select data from
 
-    :return: None
+    :return: Pandas DataFramed cleaned and filtered
     """
 
+    life_data_raw = life_data.copy(deep=True)
+
     # Pivot data to long format
-    old_column = data.columns[0]
+    old_column = life_data_raw.columns[0]
     new_columns = old_column.split(',')
 
-    data[new_columns] = data[old_column].str.split(',', expand=True)
-    data = data.drop(columns=old_column)
+    life_data_raw[new_columns] = life_data_raw[old_column].str.split(',', expand=True)
+    life_data_raw = life_data_raw.drop(columns=old_column)
 
-    data = data.melt(
+    life_data_pivoted = life_data_raw.melt(
         new_columns,
         var_name='year',
         value_name='value'
@@ -45,21 +49,21 @@ def clean_data( #pylint: disable=useless-return
 
     # Rename the column with region data
     rename_columns = {
-        data.columns[3]: 'region'
+        life_data_pivoted.columns[3]: 'region'
         }
-    data = data.rename(columns=rename_columns)
+    life_data_pivoted = life_data_pivoted.rename(columns=rename_columns)
 
     # Get columns of year and value to int and float
-    data['year'] = data['year'].astype('int')
+    life_data_pivoted['year'] = life_data_pivoted['year'].astype('int')
 
     float_regex = r'([0-9]+\.?[0-9])'
-    data['value'] = data['value'].str.extract(float_regex).astype('float')
-    data = data[~data['value'].isna()]
+    life_data_pivoted['value'] = life_data_pivoted['value'].str.extract(float_regex).astype('float')
+    life_data_cleaned = life_data_pivoted[~life_data_pivoted['value'].isna()]
 
-    # Filter data to Portugal and save file
-    data = data[data['region']==region]
+    # Filter data to user specified region
+    life_data_cleaned = life_data_cleaned[life_data_cleaned['region']==region]
 
-    return None
+    return life_data_cleaned
 
 def save_data(
     data_to_save: pd.DataFrame,
