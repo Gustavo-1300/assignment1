@@ -1,7 +1,24 @@
-"""Module for caening code and saving data transformed"""
+"""Module for cleaning code and saving data transformed"""
 import argparse
 import pathlib
 import pandas as pd
+
+def load_life_data(
+    file_name: str = 'eu_life_expectancy_raw.tsv'
+) -> pd.DataFrame:
+    """
+    Load specified file as a pandas DataFrame
+    :param file_name: Name of the file to be loaded
+
+    :return: Pandas DataFrame with loaded data
+    """
+
+    # Get the path and load data
+    path = pathlib.Path(__file__).parent / 'data'
+    data_loaded = pd.read_table(path / file_name)
+
+    return data_loaded
+
 
 def clean_data( #pylint: disable=useless-return
     region: str = 'PT'
@@ -12,11 +29,6 @@ def clean_data( #pylint: disable=useless-return
 
     :return: None
     """
-
-    # Load data
-    path = pathlib.Path(__file__).parent / 'data'
-    file_read = 'eu_life_expectancy_raw.tsv'
-    data = pd.read_table(path / file_read)
 
     # Pivot data to long format
     old_column = data.columns[0]
