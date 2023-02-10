@@ -1,31 +1,36 @@
 """Tests for the cleaning module"""
 import pandas as pd
+import pytest
+from life_expectancy.cleaning import clean_data
+from life_expectancy.tests.fixtures.mock_date import data_raw, data_expect
 
-from life_expectancy.cleaning import load_data, clean_data, save_data
-from . import OUTPUT_DIR
 
+@pytest.fixture
+def fixture_raw():
+    """
+    Load mock raw data
+    :return: Dict with raw data mocked
+    """
 
-def test_clean_data(pt_life_expectancy_expected):
+    return pd.DataFrame(data_raw())
+
+@pytest.fixture
+def fixture_expect():
+    """
+    Load mock expected data
+    :return: Dict with prepared data mocked
+    """
+
+    return pd.DataFrame(data_expect())
+
+def test_clean_data():
     """Run the `clean_data` function and compare the output to the expected output"""
-    expected_file_name = 'pt_life_expectancy.csv'
-
-    pt_life_expectancy_data = load_data(
-        file_name='eu_life_expectancy_raw.tsv'
-    )
 
     pt_life_expectancy_data = clean_data(
-        life_data=pt_life_expectancy_data,
+        life_data=fixture_raw(),
         region='PT'
     )
 
-    save_data(
-        data_to_save=pt_life_expectancy_data,
-        file_name=expected_file_name
-    )
-
-    pt_life_expectancy_actual = pd.read_csv(
-        OUTPUT_DIR / expected_file_name
-    )
     pd.testing.assert_frame_equal(
-        pt_life_expectancy_actual, pt_life_expectancy_expected
+        pt_life_expectancy_data, fixture_expect()
     )
