@@ -3,19 +3,33 @@ import argparse
 import pathlib
 import pandas as pd
 
+def generate_path(
+    folder_name: str
+) -> pathlib.Path:
+    """
+    Generate the path to folder from parent folder
+    :param folder_name: Name of the folder to append
+
+    :retunr: The full path to the folder
+    """
+    full_path = pathlib.Path(__file__).parent / folder_name
+
+    return full_path
+
 def load_data(
-    file_name: str
+    file_name: str,
+    path_file: pathlib.Path
 ) -> pd.DataFrame:
     """
     Load specified file as a pandas DataFrame from data directory
     :param file_name: Name of the file to be loaded
+    :param path_file: Path to the file
 
     :return: Pandas DataFrame with loaded data
     """
 
     # Get file's path
-    path = pathlib.Path(__file__).parent / 'data'
-    data_loaded = pd.read_table(path / file_name)
+    data_loaded = pd.read_table(path_file / file_name)
 
     return data_loaded
 
@@ -65,20 +79,21 @@ def clean_data(
 
 def save_data( #pylint: disable=useless-return
     data_to_save: pd.DataFrame,
-    file_name: str
+    file_name: str,
+    path_file: pathlib.Path
 ) ->  None:
     """
     Save a pandas DataFrame to a direcotry specified
     :param data_to_save: Pandas DataFrame with data to be saved
     :param file_name: Name to give the file created
+    :param path_file: Path where to store the file
 
     :return: None
     """
 
     # Get file's path
-    path = pathlib.Path(__file__).parent / 'data'
     data_to_save.to_csv(
-        path / file_name,
+        path_file / file_name,
         index=False
     )
 
@@ -91,8 +106,13 @@ if __name__=='__main__': # pragma: no cover
     parser.add_argument('region')
     args = parser.parse_args()
 
+    path = generate_path(
+        folder_name='data'
+    )
+
     life_data_raw = load_data(
-        file_name='eu_life_expectancy_raw.tsv'
+        file_name='eu_life_expectancy_raw.tsv',
+        path_file=path
     )
 
     life_data_processed = clean_data(
@@ -102,5 +122,6 @@ if __name__=='__main__': # pragma: no cover
 
     save_data(
         data_to_save=life_data_processed,
-        file_name='pt_life_expectancy.csv'
+        file_name='pt_life_expectancy.csv',
+        path_file=path
     )
