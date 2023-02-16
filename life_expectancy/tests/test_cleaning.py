@@ -1,7 +1,7 @@
 """Tests for the cleaning module"""
+from unittest.mock import patch, Mock
 import pytest
 import pandas as pd
-from unittest.mock import patch, Mock
 from life_expectancy.cleaning import load_data, clean_data
 from life_expectancy.tests.fixtures.mock_date import data_raw, data_expect
 from . import OUTPUT_DIR
@@ -24,11 +24,14 @@ def fixture_expect():
 
     return pd.DataFrame(data_expect())
 
-@patch("path.to.file.pandas.read_table")
-def test_load_data(fixture_raw, read_table_mock: Mock):
+@patch("pandas.read_table")
+def test_load_data(read_table_mock: Mock, fixture_raw):
+    """Run the 'load_data' """
     read_table_mock.return_value = fixture_raw
-    results = clean_data(OUTPUT_DIR)
+    results = load_data('eu_life_expectancy_raw.tsv', OUTPUT_DIR)
     read_table_mock.assert_called_once()
+
+    pd.testing.assert_frame_equal(results, fixture_raw)
 
 def test_clean_data(fixture_raw, fixture_expect):
     """Run the `clean_data` function and compare the output to the expected output"""

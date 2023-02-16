@@ -3,18 +3,8 @@ import argparse
 import pathlib
 import pandas as pd
 
-def generate_path(
-    folder_name: str
-) -> pathlib.Path:
-    """
-    Generate the path to folder from parent folder
-    :param folder_name: Name of the folder to append
-
-    :retunr: The full path to the folder
-    """
-    full_path = pathlib.Path(__file__).parent / folder_name
-
-    return full_path
+# Define path of files
+full_path: pathlib.Path = pathlib.Path(__file__).parent / 'data'
 
 def load_data(
     file_name: str,
@@ -106,13 +96,9 @@ if __name__=='__main__': # pragma: no cover
     parser.add_argument('region')
     args = parser.parse_args()
 
-    path = generate_path(
-        folder_name='data'
-    )
-
     life_data_raw = load_data(
         file_name='eu_life_expectancy_raw.tsv',
-        path_file=path
+        path_file=full_path
     )
 
     life_data_processed = clean_data(
@@ -123,5 +109,5 @@ if __name__=='__main__': # pragma: no cover
     save_data(
         data_to_save=life_data_processed,
         file_name='pt_life_expectancy.csv',
-        path_file=path
+        path_file=full_path
     )
