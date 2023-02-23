@@ -45,7 +45,7 @@ def test_clean_data(fixture_raw, fixture_expect):
         pt_life_expectancy_data, fixture_expect
     )
 
-def test_save_data(fixture_expect):
+def test_save_data(fixture_expect, capfd):
     """Run the 'save_data'"""
     with patch.object(fixture_expect, 'to_csv') as to_csv_mock:
         to_csv_mock.side_effect = print('Data saved', end="")
@@ -55,3 +55,7 @@ def test_save_data(fixture_expect):
             OUTPUT_DIR
         )
         to_csv_mock.assert_called_once()
+
+        # capfd is a Pytest fixture that captures the output of the print statement
+        out, _ = capfd.readouterr()
+        assert out == "Data saved"
