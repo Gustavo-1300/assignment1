@@ -24,7 +24,7 @@ def fixture_expect():
 
     return pd.DataFrame(data_expect())
 
-@patch("pandas.read_table")
+@patch("life_expectancy.cleaning.pd.read_table")
 def test_load_data(read_table_mock: Mock, fixture_raw):
     """Run the 'load_data' """
     read_table_mock.return_value = fixture_raw
