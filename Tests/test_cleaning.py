@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 import pandas as pd
 from life_expectancy import cleaning
-from .fixtures.mock_date import data_raw_tsv, data_expect, data_tabular
+from .fixtures.mock_date import data_raw_tsv, data_expect, data_tabular, data_with_floats
 from . import OUTPUT_DIR
 
 @pytest.fixture
@@ -33,12 +33,28 @@ def fixture_tabular():
 
     return pd.DataFrame(data_tabular())
 
+@pytest.fixture
+def fixture_floats():
+    """
+    Load mock float data
+    :return: Dict with float data mocked
+    """
+
+    return pd.DataFrame(data_with_floats())
+
 def test_transform_data_into_tabular(fixture_raw, fixture_tabular):
-    """Run the 'trnaform_data_into_tabular' function and compare expected output"""
+    """Run the 'transform_data_into_tabular' function and compare expected output"""
 
     data_observed = cleaning.transform_data_into_tabular(fixture_raw)
 
     pd.testing.assert_frame_equal(data_observed, fixture_tabular)
+
+def test_extract_floats(fixture_tabular, fixture_floats):
+    """Run the 'extract_floct' function and compare expected output"""
+
+    data_observed = cleaning.extract_floats(fixture_tabular)
+
+    pd.testing.assert_frame_equal(data_observed, fixture_floats)
 
 # def test_clean_data(fixture_raw, fixture_expect):
 #     """Run the `clean_data` function and compare the output to the expected output"""
