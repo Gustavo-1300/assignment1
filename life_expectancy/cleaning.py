@@ -1,54 +1,51 @@
 """Module for cleaning code and saving data transformed"""
-import argparse
 import pathlib
 import pandas as pd
-from data_loaders import LoadDataTSV
 
-# Define path of files
-full_path: pathlib.Path = pathlib.Path(__file__).parent / 'data'
-
-def clean_data(
-    life_data: pd.DataFrame,
-    region: str = 'PT'
+def transform_data_into_tabular(
+    raw_data: pd.DataFrame
 ) -> pd.DataFrame:
     """
-    Perform cleaning and filtering on a given table with life expectancy data
-    :param life_data: Pandas DataFRame with data of life expectancy
-    :param region: Region to select data from
+    Transform DataFrame into tabular data
+    :param raw_data: DataFrame with data to pivot
 
-    :return: Pandas DataFramed cleaned and filtered
+    :return: DataFrame in tabular form
     """
 
-    # Pivot data to long format
-    old_column = life_data.columns[0]
+    old_column = raw_data.columns[0]
     new_columns = old_column.split(',')
 
-    life_data[new_columns] = life_data[old_column].str.split(',', expand=True)
-    life_data = life_data.drop(columns=old_column)
+    raw_data[new_columns] = raw_data[old_column].str.split(',', expand=True)
+    raw_data = raw_data.drop(columns=old_column)
 
-    life_data_pivoted = life_data.melt(
+    tabular_data = raw_data.melt(
         new_columns,
         var_name='year',
-        value_name='value'
-        )
+        value_name='life_expectancy'
+    )
 
-    # Rename the column with region data
-    rename_columns = {
-        life_data_pivoted.columns[3]: 'region'
-        }
-    life_data_pivoted = life_data_pivoted.rename(columns=rename_columns)
+    return tabular_data
 
-    # Get columns of year and value to int and float
-    life_data_pivoted['year'] = life_data_pivoted['year'].astype('int')
+def extract_floats(
+    tabular_data: pd.DataFrame
+) -> pd.DataFrame:
+    """
+    Filter only rows with float like values and convert them
+    :param tabular_data: DataFrame with column of life_expectancy with float like 
+    values
 
+    :return: DataFrame with life_expectancy column as float
+    """
+
+    # Valus parsed to float
     float_regex = r'([0-9]+\.?[0-9])'
-    life_data_pivoted['value'] = life_data_pivoted['value'].str.extract(float_regex).astype('float')
-    life_data_cleaned = life_data_pivoted[~life_data_pivoted['value'].isna()]
+    life_expectancy = tabular_data['life_expectancy'].str.extract(float_regex)
 
-    # Filter data to user specified region
-    life_data_cleaned = life_data_cleaned[life_data_cleaned['region']==region]
+    # Update DataFrame
+    tabular_data['life_expectancy'] = life_expectancy.astype('float')
+    cleaned_data = tabular_data[~tabular_data['life_expectancy'].isna()]
 
-    return life_data_cleaned
+    return cleaned_data
 
 def save_data( #pylint: disable=useless-return
     data_to_save: pd.DataFrame,
@@ -71,27 +68,3 @@ def save_data( #pylint: disable=useless-return
     )
 
     return None
-
-if __name__=='__main__': # pragma: no cover
-
-    # Parse arguments passed through cli
-    parser = argparse.ArgumentParser()
-    parser.add_argument('region')
-    args = parser.parse_args()
-
-    data_loader = LoadDataTSV()
-    life_data_raw = data_loader.read_data(
-        file_name='eu_life_expectancy_raw.tsv',
-        path=full_path
-    )
-
-    life_data_processed = clean_data(
-        life_data=life_data_raw,
-        region=args.region
-    )
-
-    save_data(
-        data_to_save=life_data_processed,
-        file_name='pt_life_expectancy.csv',
-        path_file=full_path
-    )
