@@ -130,7 +130,8 @@ if __name__=='__main__': # pragma: no cover
     parser.add_argument('region')
     args = parser.parse_args()
 
-    life_data_raw = load_data(
+    data_loader = LoadDataTSV()
+    life_data_raw = data_loader.read_data(
         file_name='eu_life_expectancy_raw.tsv',
         path_file=full_path
     )
