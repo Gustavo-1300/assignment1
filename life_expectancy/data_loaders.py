@@ -3,7 +3,7 @@ import pathlib
 from abc import ABC, abstractmethod
 import pandas as pd
 
-class LoadData(ABC):
+class DataLoader(ABC):
     """
     Define interface wich should be used by the different loader classes
     independent from the type of file
@@ -16,7 +16,7 @@ class LoadData(ABC):
         Load data from file in path provided
         """
 
-class LoadDataTSV(LoadData):
+class DataLoaderTSV(DataLoader):
     """
     Load data from a TSV file
     """
@@ -36,7 +36,7 @@ class LoadDataTSV(LoadData):
 
         return pd.read_table(path / file_name)
 
-class LoadDataComrpessed(LoadData):
+class DataLoaderComrpessed(DataLoader):
     """
     Load JSON data from a compressed file
     """
