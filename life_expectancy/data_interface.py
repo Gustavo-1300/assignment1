@@ -3,7 +3,7 @@ import pathlib
 import re
 from abc import ABC, abstractmethod
 import pandas as pd
-import cleaning
+from . import cleaning
 
 class DataLoader(ABC):
     """
