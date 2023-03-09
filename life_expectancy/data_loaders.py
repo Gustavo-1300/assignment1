@@ -9,8 +9,9 @@ class LoadData(ABC):
     independent from the type of file
     """
 
+    @staticmethod
     @abstractmethod
-    def read_data(self, file_name: str, path: pathlib.Path):
+    def read_data(file_name: str, path: pathlib.Path):
         """
         Load data from file in path provided
         """
