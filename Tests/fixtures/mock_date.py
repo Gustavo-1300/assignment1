@@ -1,6 +1,6 @@
 "Fixtures for testing"
 
-def data_raw() -> dict:
+def data_raw_tsv() -> dict:
     """
     Data raw to mock
     :return: Dictionary with data
@@ -10,6 +10,18 @@ def data_raw() -> dict:
         '2021': ['79.4','79.6','79.6'],
         '2022': ['79.4','79.6','79.6'],
         '2023': ['83.2 ','79.6','79.6']
+    }
+    return data
+
+def data_tabular() -> dict:
+    """Data in tabular form"""
+    data = {
+        'unit': ['YR','YR','YR','YR','YR','YR','YR','YR','YR'],
+        'sex': ['F','F','F','F','F','F','F','F','F'],
+        'age': ['Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1'],
+        'geo\time': ['AL','AL','PT','AL','AL','PT','AL','AL','PT'],
+        'year': ['2021','2021','2021','2022','2022','2022','2023','2023','2023'],
+        'life_expectancy': ['79.4','79.6','79.6','79.4','79.6','79.6','83.2 ','79.6','79.6']
     }
     return data
 
