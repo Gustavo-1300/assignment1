@@ -1,5 +1,5 @@
 """Tests for the cleaning module"""
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 import pytest
 import pandas as pd
 from life_expectancy.cleaning import clean_data, save_data
