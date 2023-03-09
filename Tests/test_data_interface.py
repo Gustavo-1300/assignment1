@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock
 import pytest
 import pandas as pd
 from life_expectancy.data_interface import DataInterface
-from .fixtures.mock_date import data_raw
+from .fixtures.mock_date import data_raw_tsv, data_loaded
 from . import OUTPUT_DIR
 
 @pytest.fixture
@@ -13,17 +13,26 @@ def fixture_raw():
     :return: Dict with raw data mocked
     """
 
-    return pd.DataFrame(data_raw())
+    return pd.DataFrame(data_raw_tsv())
+
+@pytest.fixture
+def fixture_loaded():
+    """
+    Load mock raw data
+    :return: Dict with raw data mocked
+    """
+
+    return pd.DataFrame(data_loaded())
 
 @patch("life_expectancy.cleaning.pd.read_table")
-def test_Data_Interface_load_data(read_table_mock: Mock, fixture_raw):
+def test_data_interface_load_data(read_table_mock: Mock, fixture_raw, fixture_loaded):
     """Run the data load"""
     read_table_mock.return_value = fixture_raw
     data_interface = DataInterface(
         file_name='test.tsv',
         path=OUTPUT_DIR
     )
-    results = data_interface.load_data()
+    data_interface.load_data()
     read_table_mock.assert_called_once()
 
-    pd.testing.assert_frame_equal(results, fixture_raw)
+    pd.testing.assert_frame_equal(data_interface.data, fixture_loaded)

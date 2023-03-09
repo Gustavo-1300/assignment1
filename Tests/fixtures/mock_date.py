@@ -25,6 +25,18 @@ def data_tabular() -> dict:
     }
     return data
 
+def data_loaded() -> dict:
+    """Data loaded"""
+    data = {
+        'unit': ['YR','YR','YR','YR','YR','YR','YR','YR','YR'],
+        'sex': ['F','F','F','F','F','F','F','F','F'],
+        'age': ['Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1'],
+        'region': ['AL','AL','PT','AL','AL','PT','AL','AL','PT'],
+        'year': ['2021','2021','2021','2022','2022','2022','2023','2023','2023'],
+        'life_expectancy': [79.4,79.6,79.6,79.4,79.6,79.6,83.2,79.6,79.6]
+    }
+    return data
+
 def data_expect() -> dict:
     """
     Data expected to mock
