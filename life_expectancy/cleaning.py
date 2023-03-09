@@ -7,24 +7,6 @@ from data_loaders import LoadDataTSV
 # Define path of files
 full_path: pathlib.Path = pathlib.Path(__file__).parent / 'data'
 
-def load_data(
-    file_name: str,
-    path_file: pathlib.Path
-) -> pd.DataFrame:
-    """
-    Load specified file as a pandas DataFrame from data directory
-    :param file_name: Name of the file to be loaded
-    :param path_file: Path to the file
-
-    :return: Pandas DataFrame with loaded data
-    """
-
-    # Get file's path
-    data_loaded = pd.read_table(path_file / file_name)
-
-    return data_loaded
-
-
 def clean_data(
     life_data: pd.DataFrame,
     region: str = 'PT'
