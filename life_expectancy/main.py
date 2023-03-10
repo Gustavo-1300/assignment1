@@ -76,6 +76,7 @@ if __name__=='__main__': # pragma: no cover
     parser.add_argument('file')
     parser.add_argument('region')
     args = parser.parse_args()
+    region = Country(args.region.upper())
 
     data_interface = DataInterface(
         file_name=args.file,
@@ -83,7 +84,7 @@ if __name__=='__main__': # pragma: no cover
     )
 
     data_interface.load_data()
-    data_interface.filter_data(args.region)
+    data_interface.filter_data(region)
 
     save_data(
         data_to_save=data_interface.data,
