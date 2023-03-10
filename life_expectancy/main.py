@@ -8,7 +8,7 @@ from cleaning import save_data
 # Define path of files
 full_path: pathlib.Path = pathlib.Path(__file__).parent / 'data'
 
-# Define possible regions
+# Define possible countries
 @unique
 class Country(Enum):
     """Existing regions in dataset"""
@@ -22,7 +22,6 @@ class Country(Enum):
     EE = 'ESTONIA'
     EL = 'GREECE'
     ES = 'SPAIN'
-    EU_27_2020 = 'EUROPEAN_UNION'
     FI = 'FINLAND'
     FR = 'FRANCE'
     HR = 'CROACIA'
@@ -43,11 +42,7 @@ class Country(Enum):
     SI = 'SLOVENIA'
     SK = 'SLOVAKIA'
     DE = 'GERMANY'
-    DE_TOT = 'GERMANY_TOT'
     AL = 'ALBANIA'
-    EA_18 = 'EURO_AREA_18'
-    EA_19 = 'EURO_AREA_19'
-    EFTA = 'EUROPE_FREE_TRADE_ASSOCIATION'
     IE = 'IRELAND'
     ME = 'MONTENEGRO'
     MK = 'NORTH_MACEDONIA'
@@ -58,16 +53,31 @@ class Country(Enum):
     TR = 'TURKEY'
     UA = 'UKRAINE'
     BY = 'BELARUS'
-    EEA30_2007 = 'EUROPEAN_ECONOMIC_AREA_2007'
-    EEA31 = 'EUROPEAN_ECONOMIC_AREA'
-    EU27_2007 = 'EUROPEAN_UNION_2007'
-    EU28 = 'EUROPEAN_UNION_28'
     UK = 'UNITED_KINGDOM'
     XK = 'KOSOVO'
     FX = 'FRANCE_METROPOLITAN'
     MD = 'MOLDOVA'
     SM = 'SAN_MARINO'
     RU = 'RUSSIA'
+
+    @staticmethod
+    def list():
+        """Print list of countries"""
+        return list(map(lambda c: c.value, Country))
+
+# Define possible regions
+@unique
+class Region(Enum):
+    """Existing regions in dataset"""
+    EU_27_2020 = 'EUROPEAN_UNION'
+    DE_TOT = 'GERMANY_TOT'
+    EA_18 = 'EURO_AREA_18'
+    EA_19 = 'EURO_AREA_19'
+    EFTA = 'EUROPE_FREE_TRADE_ASSOCIATION'
+    EEA30_2007 = 'EUROPEAN_ECONOMIC_AREA_2007'
+    EEA31 = 'EUROPEAN_ECONOMIC_AREA'
+    EU27_2007 = 'EUROPEAN_UNION_2007'
+    EU28 = 'EUROPEAN_UNION_28'
 
 if __name__=='__main__': # pragma: no cover
 
@@ -76,7 +86,16 @@ if __name__=='__main__': # pragma: no cover
     parser.add_argument('file')
     parser.add_argument('region')
     args = parser.parse_args()
-    region = Country(args.region.upper())
+
+    # Parse the region argument
+    try:
+        region = Country(args.region.upper()).name
+    except ValueError:
+        pass
+    try:
+        region = Region(args.region.upper()).name
+    except ValueError:
+        print(f'{args.region} is not a valid region')
 
     data_interface = DataInterface(
         file_name=args.file,
