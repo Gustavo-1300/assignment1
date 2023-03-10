@@ -91,11 +91,10 @@ if __name__=='__main__': # pragma: no cover
     try:
         region = Country(args.region.upper()).name
     except ValueError:
-        pass
-    try:
-        region = Region(args.region.upper()).name
-    except ValueError:
-        print(f'{args.region} is not a valid region')
+        try:
+            region = Region(args.region.upper()).name
+        except ValueError:
+            print(f'{args.region} is not a valid region')
 
     data_interface = DataInterface(
         file_name=args.file,
