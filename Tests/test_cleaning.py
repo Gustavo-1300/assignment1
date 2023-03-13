@@ -2,7 +2,7 @@
 from unittest.mock import patch
 import pytest
 import pandas as pd
-from assignment1.life_expectancy import etl
+from life_expectancy import etl
 from .fixtures.mock_date import fixture_raw_tsv, fixture_expect, fixture_tabular
 from .fixtures.mock_date import fixture_with_floats
 from . import OUTPUT_DIR

@@ -6,7 +6,7 @@ from life_expectancy.data_interface import DataInterface
 from .fixtures.mock_date import fixture_raw_tsv, fixture_loaded
 from . import OUTPUT_DIR
 
-@patch("life_expectancy.cleaning.pd.read_table")
+@patch("life_expectancy.etl.pd.read_table")
 def test_data_interface_load_data(read_table_mock: Mock, fixture_raw_tsv, fixture_loaded):
     """Run the data load"""
     read_table_mock.return_value = fixture_raw_tsv

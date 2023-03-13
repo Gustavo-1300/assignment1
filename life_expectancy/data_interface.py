@@ -2,7 +2,6 @@
 import pathlib
 import re
 from abc import ABC, abstractmethod
-from enum import Enum, unique
 import pandas as pd
 from . import etl
 
@@ -63,20 +62,6 @@ class DataLoaderCompressed(DataLoader):
 
         return data_raw
 
-@unique
-class LoaderOption(Enum):
-    """List of possible file extensions"""
-    TSV = DataLoaderTSV
-    ZIP = DataLoaderCompressed
-
-    @classmethod
-    def from_path(cls, suffix: str):
-        """Obtain correct loader for file extension"""
-        for member in cls:
-            if member.name.lower() == suffix[1:]:
-                return member
-        raise ValueError(f'No member found with suffiz {suffix}')
-
 class  DataInterface():
     """Interface to rewrite the necessary data from raw files to a processed one"""
 
@@ -98,12 +83,24 @@ class  DataInterface():
         self._path = path
         self._file_extension = re.search("\.(.*)", self._file_name)[0]
 
+    def _check_file_extension(
+        self
+    ) -> DataLoader:
+        """Return the correct DataLoader according to file extension"""
+
+        if self._file_extension == '.tsv':
+            return DataLoaderTSV()
+        if self._file_extension == '.zip':
+            return DataLoaderCompressed()
+
+        raise ValueError('File extension not valid!')
+
     def load_data(
         self
     ) -> pd.DataFrame:
         """Load the file identified"""
 
-        data_loader = LoaderOption.from_path(self._file_extension)()
+        data_loader = self._check_file_extension()
         self.data: pd.DataFrame = data_loader.read_data(self._file_name, self._path)
 
         # Rename the column with region data
