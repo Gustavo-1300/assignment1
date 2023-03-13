@@ -47,7 +47,7 @@ def extract_floats(
 
     return cleaned_data
 
-def save_data( #pylint: disable=useless-return
+def save_data(
     data_to_save: pd.DataFrame,
     file_name: str,
     path_file: pathlib.Path
@@ -61,10 +61,7 @@ def save_data( #pylint: disable=useless-return
     :return: None
     """
 
-    # Get file's path
     data_to_save.to_csv(
         path_file / file_name,
         index=False
     )
-
-    return None
