@@ -3,7 +3,7 @@ import pathlib
 import re
 from abc import ABC, abstractmethod
 import pandas as pd
-from . import cleaning
+from . import etl
 
 class DataLoader(ABC):
     """
@@ -36,8 +36,8 @@ class DataLoaderTSV(DataLoader):
 
         data_raw = pd.read_table(path / file_name)
 
-        tabular_data = cleaning.transform_data_into_tabular(data_raw)
-        cleaned_data = cleaning.extract_floats(tabular_data)
+        tabular_data = etl.transform_data_into_tabular(data_raw)
+        cleaned_data = etl.extract_floats(tabular_data)
 
         return cleaned_data
 

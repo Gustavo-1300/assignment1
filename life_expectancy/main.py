@@ -3,7 +3,7 @@ import pathlib
 import argparse
 from enum import Enum, unique
 from .data_interface import DataInterface
-from .cleaning import save_data
+from .etl import save_data
 
 # Define path of files
 full_path: pathlib.Path = pathlib.Path(__file__).parent / 'data'
