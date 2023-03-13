@@ -1,65 +1,51 @@
 "Fixtures for testing"
+import pathlib
+import pytest
+import pandas as pd
 
-def data_raw_tsv() -> dict:
+path_files = pathlib.Path(__file__).parent
+
+@pytest.fixture(scope='module')
+def fixture_raw_tsv() -> pd.DataFrame:
     """
-    Data raw to mock
-    :return: Dictionary with data
+    Load mock raw data
+    :return: DataFrame with raw data mocked
     """
-    data = {
-        'unit,sex,age,geo\time': ['YR,F,Y1,AL','YR,F,Y1,AL','YR,F,Y1,PT'],
-        '2021': ['79.4e','79.6','79.6'],
-        '2022': ['79.4e','79.6','79.6'],
-        '2023': ['83.2 ','79.6','79.6']
-    }
-    return data
 
-def data_tabular() -> dict:
-    """Data in tabular form"""
-    data = {
-        'unit': ['YR','YR','YR','YR','YR','YR','YR','YR','YR'],
-        'sex': ['F','F','F','F','F','F','F','F','F'],
-        'age': ['Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1'],
-        'geo\time': ['AL','AL','PT','AL','AL','PT','AL','AL','PT'],
-        'year': ['2021','2021','2021','2022','2022','2022','2023','2023','2023'],
-        'life_expectancy': ['79.4e','79.6','79.6','79.4e','79.6','79.6','83.2 ','79.6','79.6']
-    }
-    return data
+    return pd.read_json(path_files / 'data_raw_tsv.json',orient='table')
 
-def data_with_floats() -> dict:
-    """Data with floats"""
-    data = {
-        'unit': ['YR','YR','YR','YR','YR','YR','YR','YR','YR'],
-        'sex': ['F','F','F','F','F','F','F','F','F'],
-        'age': ['Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1'],
-        'geo\time': ['AL','AL','PT','AL','AL','PT','AL','AL','PT'],
-        'year': ['2021','2021','2021','2022','2022','2022','2023','2023','2023'],
-        'life_expectancy': [79.4,79.6,79.6,79.4,79.6,79.6,83.2,79.6,79.6]
-    }
-    return data
-
-def data_loaded() -> dict:
-    """Data loaded"""
-    data = {
-        'unit': ['YR','YR','YR','YR','YR','YR','YR','YR','YR'],
-        'sex': ['F','F','F','F','F','F','F','F','F'],
-        'age': ['Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1','Y1'],
-        'region': ['AL','AL','PT','AL','AL','PT','AL','AL','PT'],
-        'year': ['2021','2021','2021','2022','2022','2022','2023','2023','2023'],
-        'life_expectancy': [79.4,79.6,79.6,79.4,79.6,79.6,83.2,79.6,79.6]
-    }
-    return data
-
-def data_expect() -> dict:
+@pytest.fixture(scope='module')
+def fixture_tabular() -> pd.DataFrame:
     """
-    Data expected to mock
-    :return: Dictionary with data prepared mocked
+    Load mock tabular data
+    :return: DataFrame with tabular data mocked
     """
-    data = {
-        'unit': ['YR','YR','YR'],
-        'sex': ['F','F','F'],
-        'age': ['Y1','Y1','Y1'],
-        'region': ['PT','PT','PT'],
-        'year': [2021,2022,2023],
-        'value': [79.6,79.6,79.6]
-    }
-    return data
+
+    return pd.read_json(path_files / 'data_tabular.json',orient='table')
+
+@pytest.fixture(scope='module')
+def fixture_with_floats() -> pd.DataFrame:
+    """
+    Load mock data with floats
+    :return: DataFrame with data with floats mocked
+    """
+
+    return pd.read_json(path_files / 'data_with_floats.json',orient='table')
+
+@pytest.fixture(scope='module')
+def fixture_loaded() -> pd.DataFrame:
+    """
+    Load mock loaded data
+    :return: DataFrame with loaded data mocked
+    """
+
+    return pd.read_json(path_files / 'data_loaded.json',orient='table')
+
+@pytest.fixture(scope='module')
+def fixture_expect() -> pd.DataFrame:
+    """
+    Load mock expected data
+    :return: DataFrame with expected data mocked
+    """
+
+    return pd.read_json(path_files / 'data_expect.json',orient='table')
