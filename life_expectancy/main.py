@@ -82,19 +82,21 @@ class Instituions(Enum):
 
 Regions = Enum('Regions', [(i.name, i.value) for i in chain(Countries, Instituions)])
 
-if __name__=='__main__': # pragma: no cover
+def main(
+        file: str,
+        region: str
+) -> None:
+    """
+    Function that receives user arguments to process a data file for a choosen region
+    :param file: Name of the file with data to process and filter
+    :param region: Region to filter data
 
-    # Parse arguments passed through cli
-    parser = argparse.ArgumentParser()
-    parser.add_argument('file')
-    parser.add_argument('region')
-    args = parser.parse_args()
-
-    # Parse the region argument
-    region = Regions(args.region.upper()).name
+    :return: None
+    """
+    region = Regions(region.upper()).name
 
     data_interface = DataInterface(
-        file_name=args.file,
+        file_name=file,
         path=full_path
     )
 
@@ -106,3 +108,13 @@ if __name__=='__main__': # pragma: no cover
         file_name='pt_life_expectancy.csv',
         path_file=full_path
     )
+
+if __name__=='__main__': # pragma: no cover
+
+    # Parse arguments passed through cli
+    parser = argparse.ArgumentParser()
+    parser.add_argument('file')
+    parser.add_argument('region')
+    args = parser.parse_args()
+
+    main(args.file, args.region)

@@ -1,5 +1,7 @@
 """Test the main module"""
-from life_expectancy.main import Countries
+from unittest.mock import patch, Mock
+from life_expectancy.main import Countries, main
+from .fixtures.mock_date import fixture_raw_tsv
 
 def test_list_country():
     """Test Country list function"""
@@ -17,3 +19,13 @@ def test_list_country():
     ]
 
     assert not set(countries_list_actual) ^ set(countries_list_expected)
+
+@patch("life_expectancy.main.save_data")
+@patch("life_expectancy.etl.pd.read_table")
+def test_main(read_table_mock: Mock, write_table_mock: Mock, fixture_raw_tsv):
+    """Integration test e2e"""
+
+    read_table_mock.return_value = fixture_raw_tsv
+    main('test.tsv', 'Portugal')
+    read_table_mock.assert_called_once()
+    write_table_mock.assert_called_once()
