@@ -16,4 +16,4 @@ def test_list_country():
         'MOLDOVA', 'SAN_MARINO', 'RUSSIA'
     ]
 
-    assert set(countries_list_actual) == set(countries_list_expected)
+    assert not set(countries_list_actual) ^ set(countries_list_expected)
