@@ -1,11 +1,9 @@
 """Test the main module"""
-import unittest
 from life_expectancy.main import Country
 
 def test_list_country():
     """Test Country list function"""
 
-    case = unittest.TestCase()
     countries_list_actual = Country.list()
     countries_list_expected = [
         'AUSTRIA', 'BELGIUM', 'BULGARIA', 'SWITZERLAND', 'CYPRUS', 'CZECHIA', 'DENMARK',
@@ -18,4 +16,4 @@ def test_list_country():
         'MOLDOVA', 'SAN_MARINO', 'RUSSIA'
     ]
 
-    case.assertCountEqual(countries_list_actual, countries_list_expected)
+    assert set(countries_list_actual) == set(countries_list_expected)
