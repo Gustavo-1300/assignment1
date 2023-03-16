@@ -1,6 +1,7 @@
 """Module for processing and saving a file"""
 import pathlib
 import argparse
+from itertools import chain
 from enum import Enum, unique
 from .data_interface import DataInterface
 from .etl import save_data
@@ -10,7 +11,7 @@ full_path: pathlib.Path = pathlib.Path(__file__).parent / 'data'
 
 # Define possible countries
 @unique
-class Country(Enum):
+class Countries(Enum):
     """Existing regions in dataset"""
     AT = 'AUSTRIA'
     BE = 'BELGIUM'
@@ -63,11 +64,11 @@ class Country(Enum):
     @staticmethod
     def list():
         """Print list of countries"""
-        return [e.value for e in Country]
+        return [e.value for e in Countries]
 
 # Define possible regions
 @unique
-class Region(Enum):
+class Instituions(Enum):
     """Existing regions in dataset"""
     EU_27_2020 = 'EUROPEAN_UNION'
     DE_TOT = 'GERMANY_TOT'
@@ -79,6 +80,8 @@ class Region(Enum):
     EU27_2007 = 'EUROPEAN_UNION_2007'
     EU28 = 'EUROPEAN_UNION_28'
 
+Regions = Enum('Regions', [(i.name, i.value) for i in chain(Countries, Instituions)])
+
 if __name__=='__main__': # pragma: no cover
 
     # Parse arguments passed through cli
@@ -88,13 +91,7 @@ if __name__=='__main__': # pragma: no cover
     args = parser.parse_args()
 
     # Parse the region argument
-    try:
-        region = Country(args.region.upper()).name
-    except ValueError:
-        try:
-            region = Region(args.region.upper()).name
-        except ValueError:
-            print(f'{args.region} is not a valid region')
+    region = Regions(args.region.upper()).name
 
     data_interface = DataInterface(
         file_name=args.file,
