@@ -1,10 +1,10 @@
 """Test the main module"""
-from life_expectancy.main import Country
+from life_expectancy.main import Countries
 
 def test_list_country():
     """Test Country list function"""
 
-    countries_list_actual = Country.list()
+    countries_list_actual = Countries.list()
     countries_list_expected = [
         'AUSTRIA', 'BELGIUM', 'BULGARIA', 'SWITZERLAND', 'CYPRUS', 'CZECHIA', 'DENMARK',
         'ESTONIA', 'GREECE', 'SPAIN', 'FINLAND', 'FRANCE', 'CROACIA', 'HUNGARY', 
